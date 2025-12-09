@@ -1,38 +1,23 @@
 // ==================== MONETAG AD INTEGRATION ====================
-// Đăng ký tại: https://publishers.monetag.com
-// Dashboard: https://publishers.monetag.com/dashboard
+// Đã cấu hình với Zone 191569
+// Script đã được load trong index.html
 
 const AD_CONFIG = {
     // Ad Network: monetag
     network: 'monetag',
 
-    // Monetag Config - LẤY TỪ DASHBOARD SAU KHI ĐĂNG KÝ
+    // Monetag Config - ĐÃ CẤU HÌNH
     monetag: {
-        // 1. Đăng ký website tại https://publishers.monetag.com
-        // 2. Add site: string-cutter-kappa.vercel.app
-        // 3. Chọn ad formats và lấy codes
-
-        // Zone IDs - thay bằng IDs thật từ dashboard
+        // Zone ID từ Monetag Dashboard
         zones: {
-            banner: 'YOUR_BANNER_ZONE_ID',      // In-Page Push hoặc Banner
-            push: 'YOUR_PUSH_ZONE_ID',          // Web Push Notifications
-            interstitial: 'YOUR_INTERSTITIAL_ID', // Interstitial/Popunder
-            vignette: 'YOUR_VIGNETTE_ID'        // Vignette ads
+            main: '191569'  // Zone chính đã được add vào HTML
         },
 
-        // Site ID từ dashboard
-        siteId: 'YOUR_SITE_ID',
-
-        // Enable các loại ads
-        formats: {
-            inPagePush: true,      // In-page push (không cần permission)
-            webPush: true,         // Web push notifications
-            interstitial: true,    // Interstitial ads
-            vignette: false        // Vignette banner
-        }
+        // Script URL (đã load trong HTML)
+        scriptUrl: 'https://quge5.com/88/tag.min.js'
     },
 
-    // Tần suất hiển thị
+    // Tần suất hiển thị quảng cáo nội bộ
     frequency: {
         interstitialAfterCuts: 5,   // Hiện interstitial sau mỗi 5 lần cắt
         pushPromptDelay: 30000      // Prompt push sau 30s
