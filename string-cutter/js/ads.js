@@ -1,196 +1,193 @@
-// ==================== QUẢNG CÁO THẬT - AD NETWORK INTEGRATION ====================
-// Hỗ trợ: PropellerAds, Adsterra, hoặc tự host
+// ==================== MONETAG AD INTEGRATION ====================
+// Đăng ký tại: https://publishers.monetag.com
+// Dashboard: https://publishers.monetag.com/dashboard
 
 const AD_CONFIG = {
-    // Chọn ad network: 'propellerads', 'adsterra', 'self', 'none'
-    network: 'propellerads',
+    // Ad Network: monetag
+    network: 'monetag',
 
-    // PropellerAds Config
-    // Đăng ký tại: https://propellerads.com
-    propellerads: {
-        // Sau khi đăng ký, lấy Zone ID từ dashboard
-        zoneId: 'YOUR_ZONE_ID', // Thay bằng Zone ID thật
-        // Các loại quảng cáo
+    // Monetag Config - LẤY TỪ DASHBOARD SAU KHI ĐĂNG KÝ
+    monetag: {
+        // 1. Đăng ký website tại https://publishers.monetag.com
+        // 2. Add site: string-cutter-kappa.vercel.app
+        // 3. Chọn ad formats và lấy codes
+
+        // Zone IDs - thay bằng IDs thật từ dashboard
+        zones: {
+            banner: 'YOUR_BANNER_ZONE_ID',      // In-Page Push hoặc Banner
+            push: 'YOUR_PUSH_ZONE_ID',          // Web Push Notifications
+            interstitial: 'YOUR_INTERSTITIAL_ID', // Interstitial/Popunder
+            vignette: 'YOUR_VIGNETTE_ID'        // Vignette ads
+        },
+
+        // Site ID từ dashboard
+        siteId: 'YOUR_SITE_ID',
+
+        // Enable các loại ads
         formats: {
-            banner: true,      // Banner ads
-            push: true,        // Push notifications
-            interstitial: true // Popup giữa các action
+            inPagePush: true,      // In-page push (không cần permission)
+            webPush: true,         // Web push notifications
+            interstitial: true,    // Interstitial ads
+            vignette: false        // Vignette banner
         }
     },
 
-    // Adsterra Config
-    // Đăng ký tại: https://adsterra.com
-    adsterra: {
-        publisherId: 'YOUR_PUBLISHER_ID',
-        bannerId: 'YOUR_BANNER_ID',
-        popunderId: 'YOUR_POPUNDER_ID'
-    },
-
-    // Self-hosted ads (quảng cáo tự host)
-    self: {
-        banners: [
-            {
-                image: 'https://your-server.com/ads/banner1.jpg',
-                link: 'https://your-affiliate-link.com',
-                alt: 'Quảng cáo 1'
-            },
-            {
-                image: 'https://your-server.com/ads/banner2.jpg',
-                link: 'https://your-affiliate-link.com',
-                alt: 'Quảng cáo 2'
-            }
-        ]
-    },
-
-    // Tần suất hiển thị ads
+    // Tần suất hiển thị
     frequency: {
-        interstitialAfterCuts: 5,  // Hiện popup sau mỗi 5 lần cắt
-        bannerRefreshSeconds: 60   // Refresh banner mỗi 60 giây
+        interstitialAfterCuts: 5,   // Hiện interstitial sau mỗi 5 lần cắt
+        pushPromptDelay: 30000      // Prompt push sau 30s
     }
 };
 
-// ==================== PROPELLERADS INTEGRATION ====================
+// ==================== MONETAG INITIALIZATION ====================
 
-function initPropellerAds() {
-    if (AD_CONFIG.network !== 'propellerads') return;
-    if (AD_CONFIG.propellerads.zoneId === 'YOUR_ZONE_ID') {
-        console.log('⚠️ PropellerAds chưa được cấu hình');
+function initMonetag() {
+    if (AD_CONFIG.network !== 'monetag') return;
+
+    // Không load ads cho Premium users
+    if (userPermissions && (userPermissions.plan === 'premium' || userPermissions.adFree)) {
+        console.log('👑 Premium user - skipping ads');
         return;
     }
 
-    // Push Notifications (Cần user consent)
-    if (AD_CONFIG.propellerads.formats.push) {
-        loadPropellerPush();
+    console.log('📺 Initializing Monetag ads...');
+
+    // Load different ad formats
+    if (AD_CONFIG.monetag.formats.inPagePush) {
+        loadInPagePush();
     }
 
-    // Banner ads
-    if (AD_CONFIG.propellerads.formats.banner) {
-        loadPropellerBanner();
+    if (AD_CONFIG.monetag.formats.webPush) {
+        loadWebPush();
     }
 
-    console.log('✅ PropellerAds initialized');
+    if (AD_CONFIG.monetag.formats.interstitial) {
+        loadInterstitial();
+    }
 }
 
-function loadPropellerPush() {
-    // PropellerAds Push Notification script
-    // Lấy code này từ dashboard PropellerAds sau khi đăng ký
-    const script = document.createElement('script');
-    script.src = `//propellerads.com/nacl.js?z=${AD_CONFIG.propellerads.zoneId}`;
+// In-Page Push Ads (không cần permission)
+function loadInPagePush() {
+    /*
+    HƯỚNG DẪN: 
+    1. Vào Monetag Dashboard > Sites > Your Site > Ad Units
+    2. Tạo "In-Page Push" ad unit
+    3. Copy code và paste vào đây
+    
+    Code mẫu từ Monetag:
+    */
+
+    // Uncomment và thay bằng code thật từ Monetag:
+    /*
+    (function(d,z,s){
+        s.src='https://'+d+'/400/'+z;
+        try{
+            (document.body||document.documentElement).appendChild(s)
+        }catch(e){}
+    })('grsjauede.net', YOUR_ZONE_ID, document.createElement('script'));
+    */
+
+    console.log('ℹ️ In-Page Push: Chưa cấu hình - thêm code từ Monetag dashboard');
+}
+
+// Web Push Notifications
+function loadWebPush() {
+    /*
+    HƯỚNG DẪN:
+    1. Vào Monetag Dashboard > Sites > Your Site > Ad Units
+    2. Tạo "Push Notifications" ad unit
+    3. Copy script và paste vào đây
+    
+    Code mẫu:
+    */
+
+    // Uncomment và thay bằng code thật:
+    /*
+    var script = document.createElement('script');
+    script.src = 'https://yoursite.monetag.com/push/YOUR_PUSH_ID';
     script.async = true;
     document.head.appendChild(script);
+    */
+
+    console.log('ℹ️ Web Push: Chưa cấu hình - thêm code từ Monetag dashboard');
 }
 
-function loadPropellerBanner() {
-    // Banner sẽ load vào các container có class 'ad-slot'
-    const adSlots = document.querySelectorAll('.ad-slot');
-    adSlots.forEach(slot => {
-        const iframe = document.createElement('iframe');
-        iframe.src = `//propellerads.com/banner/${AD_CONFIG.propellerads.zoneId}`;
-        iframe.width = slot.dataset.width || '300';
-        iframe.height = slot.dataset.height || '250';
-        iframe.frameBorder = '0';
-        iframe.scrolling = 'no';
-        slot.appendChild(iframe);
-    });
+// Interstitial Ads (popunder)
+function loadInterstitial() {
+    /*
+    HƯỚNG DẪN:
+    1. Vào Monetag Dashboard > Sites > Your Site > Ad Units  
+    2. Tạo "Interstitial" hoặc "Popunder" ad unit
+    3. Copy code
+    
+    Code mẫu:
+    */
+
+    // Uncomment và thay bằng code thật:
+    /*
+    (function(d,z,s){
+        s.src='https://'+d+'/401/'+z;
+        try{
+            (document.body||document.documentElement).appendChild(s)
+        }catch(e){}
+    })('grsjauede.net', YOUR_INTERSTITIAL_ZONE, document.createElement('script'));
+    */
+
+    console.log('ℹ️ Interstitial: Chưa cấu hình - thêm code từ Monetag dashboard');
 }
 
-// ==================== ADSTERRA INTEGRATION ====================
-
-function initAdsterra() {
-    if (AD_CONFIG.network !== 'adsterra') return;
-    if (AD_CONFIG.adsterra.publisherId === 'YOUR_PUBLISHER_ID') {
-        console.log('⚠️ Adsterra chưa được cấu hình');
-        return;
-    }
-
-    // Social Bar (floating ad)
-    const script = document.createElement('script');
-    script.src = `//www.highperformancedformats.com/${AD_CONFIG.adsterra.publisherId}/invoke.js`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    console.log('✅ Adsterra initialized');
-}
-
-// ==================== SELF-HOSTED ADS ====================
-
-function initSelfAds() {
-    if (AD_CONFIG.network !== 'self') return;
-
-    const adSlots = document.querySelectorAll('.ad-slot');
-    const banners = AD_CONFIG.self.banners;
-
-    adSlots.forEach((slot, index) => {
-        const banner = banners[index % banners.length];
-        slot.innerHTML = `
-            <a href="${banner.link}" target="_blank" rel="noopener sponsored">
-                <img src="${banner.image}" alt="${banner.alt}" style="max-width:100%;">
-            </a>
-        `;
-    });
-
-    // Rotate banners
-    setInterval(() => {
-        adSlots.forEach((slot, index) => {
-            const randomBanner = banners[Math.floor(Math.random() * banners.length)];
-            slot.innerHTML = `
-                <a href="${randomBanner.link}" target="_blank" rel="noopener sponsored">
-                    <img src="${randomBanner.image}" alt="${randomBanner.alt}" style="max-width:100%;">
-                </a>
-            `;
-        });
-    }, AD_CONFIG.frequency.bannerRefreshSeconds * 1000);
-
-    console.log('✅ Self-hosted ads initialized');
-}
-
-// ==================== INTERSTITIAL ADS ====================
+// ==================== INTERSTITIAL AD (Custom fallback) ====================
 
 let cutCounter = 0;
 
 function maybeShowInterstitialAd() {
-    // Không hiện cho Premium users
-    if (userPermissions && userPermissions.plan === 'premium') return;
+    // Không hiện cho Premium/adFree users
+    if (userPermissions && (userPermissions.plan === 'premium' || userPermissions.adFree)) {
+        return;
+    }
 
     cutCounter++;
 
     if (cutCounter >= AD_CONFIG.frequency.interstitialAfterCuts) {
         cutCounter = 0;
-        showInterstitialAd();
+        showCustomInterstitial();
     }
 }
 
-function showInterstitialAd() {
-    // Tạo interstitial overlay
+function showCustomInterstitial() {
+    // Tạo custom interstitial fallback
     const overlay = document.createElement('div');
-    overlay.id = 'interstitialAd';
+    overlay.id = 'customInterstitial';
     overlay.style.cssText = `
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.9);
-        z-index: 9999;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.95);
+        z-index: 99999;
         display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
     `;
 
-    // Content
     overlay.innerHTML = `
-        <div style="background: #1a1a2e; padding: 2rem; border-radius: 16px; text-align: center; max-width: 400px;">
-            <p style="color: #888; margin-bottom: 1rem; font-size: 0.8rem;">QUẢNG CÁO</p>
-            <div class="ad-slot" data-width="300" data-height="250" style="margin-bottom: 1rem; min-height: 250px; background: #0a0a1a; display: flex; align-items: center; justify-content: center; color: #666;">
-                [Ad sẽ hiển thị ở đây]
+        <div style="background: linear-gradient(135deg, #1a1a2e, #16213e); padding: 2rem; border-radius: 20px; text-align: center; max-width: 400px; border: 2px solid #6366f1;">
+            <p style="color: #888; font-size: 0.75rem; margin-bottom: 1rem;">QUẢNG CÁO</p>
+            
+            <div style="background: #0a0a1a; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
+                <p style="color: #ffd700; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem;">
+                    💎 NÂNG CẤP PREMIUM
+                </p>
+                <p style="color: #9ca3af; font-size: 0.9rem; margin-bottom: 1rem;">
+                    Chỉ 299,000đ - Mở khóa tất cả tính năng!
+                </p>
+                <button id="adUpgradeBtn" style="padding: 0.75rem 2rem; background: linear-gradient(135deg, #ffd700, #ffa500); border: none; border-radius: 8px; color: #000; font-weight: 700; cursor: pointer;">
+                    👑 MUA NGAY
+                </button>
             </div>
-            <button id="closeInterstitial" style="padding: 0.75rem 2rem; background: linear-gradient(135deg, #6366f1, #a855f7); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer;">
-                Tiếp tục sau <span id="adCountdown">5</span>s
+            
+            <button id="closeInterstitialBtn" style="padding: 0.75rem 2rem; background: rgba(100,100,100,0.3); border: 1px solid #444; border-radius: 8px; color: #888; cursor: pointer; font-size: 0.85rem;">
+                Tiếp tục sau <span id="adTimer">5</span>s
             </button>
-            <p style="color: #ffd700; margin-top: 1rem; font-size: 0.85rem;">
-                💎 Nâng cấp Premium để tắt quảng cáo!
-            </p>
         </div>
     `;
 
@@ -198,21 +195,21 @@ function showInterstitialAd() {
 
     // Countdown
     let countdown = 5;
-    const countdownEl = document.getElementById('adCountdown');
-    const closeBtn = document.getElementById('closeInterstitial');
+    const timerEl = document.getElementById('adTimer');
+    const closeBtn = document.getElementById('closeInterstitialBtn');
+    const upgradeBtn = document.getElementById('adUpgradeBtn');
 
     closeBtn.disabled = true;
-    closeBtn.style.opacity = '0.5';
 
     const timer = setInterval(() => {
         countdown--;
-        countdownEl.textContent = countdown;
+        if (timerEl) timerEl.textContent = countdown;
 
         if (countdown <= 0) {
             clearInterval(timer);
             closeBtn.disabled = false;
-            closeBtn.style.opacity = '1';
-            closeBtn.textContent = 'Đóng quảng cáo';
+            closeBtn.textContent = '✕ Đóng';
+            closeBtn.style.color = '#fff';
         }
     }, 1000);
 
@@ -222,54 +219,26 @@ function showInterstitialAd() {
         }
     });
 
-    // Load ad vào slot
-    if (AD_CONFIG.network === 'propellerads') {
-        loadPropellerBanner();
-    } else if (AD_CONFIG.network === 'self') {
-        const slot = overlay.querySelector('.ad-slot');
-        const banner = AD_CONFIG.self.banners[Math.floor(Math.random() * AD_CONFIG.self.banners.length)];
-        slot.innerHTML = `
-            <a href="${banner.link}" target="_blank" rel="noopener sponsored">
-                <img src="${banner.image}" alt="${banner.alt}" style="max-width:100%;">
-            </a>
-        `;
-    }
+    upgradeBtn.addEventListener('click', () => {
+        overlay.remove();
+        if (typeof processRealPayment === 'function') {
+            processRealPayment('premium');
+        }
+    });
 }
 
 // ==================== KHỞI TẠO ====================
 
 function initAds() {
-    // Không init cho Premium users
-    if (userPermissions && userPermissions.plan === 'premium') {
-        console.log('👑 Premium user - skipping ads');
-        return;
-    }
-
-    switch (AD_CONFIG.network) {
-        case 'propellerads':
-            initPropellerAds();
-            break;
-        case 'adsterra':
-            initAdsterra();
-            break;
-        case 'self':
-            initSelfAds();
-            break;
-        case 'none':
-            console.log('ℹ️ Ads disabled');
-            break;
-        default:
-            console.log('⚠️ Unknown ad network');
-    }
+    // Delay để load permissions trước
+    setTimeout(() => {
+        initMonetag();
+    }, 1000);
 }
 
-// Chạy khi load trang
-document.addEventListener('DOMContentLoaded', () => {
-    // Delay để load user permissions trước
-    setTimeout(initAds, 500);
-});
+document.addEventListener('DOMContentLoaded', initAds);
 
-// Export để dùng từ features.js
+// Export cho global use
 if (typeof window !== 'undefined') {
     window.maybeShowInterstitialAd = maybeShowInterstitialAd;
 }

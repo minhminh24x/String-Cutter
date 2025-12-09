@@ -134,17 +134,16 @@ function setupEventListeners() {
     // Copy button
     copyBtn.addEventListener('click', () => {
         if (copyBtn.classList.contains('locked')) {
-            showPaymentModal(
-                '📋 Sao chép cao cấp',
-                'Tính năng Sao chép nhanh chỉ dành cho hội viên VIP. Bạn có muốn nâng cấp để bảo vệ ngón tay không?',
-                '$9.99',
-                '$0.00',
-                'copyEnabled',
-                () => {
-                    copyResult();
-                    updateUI();
-                }
-            );
+            // THANH TOÁN THẬT
+            if (typeof showRealPaymentModal === 'function') {
+                showRealPaymentModal(
+                    'unlockCopy',
+                    '📋 Mở khóa Sao chép',
+                    'Sao chép kết quả về clipboard của bạn. Tính năng cơ bản nhưng rất hữu ích!'
+                );
+            } else {
+                showToast('Cần nâng cấp để sao chép!', 'warning');
+            }
             return;
         }
         copyResult();
@@ -153,69 +152,74 @@ function setupEventListeners() {
     // Add pattern button
     addPatternBtn.addEventListener('click', () => {
         if (addPatternBtn.classList.contains('locked')) {
-            showPaymentModal(
-                '➕ Đa nhiệm cao cấp',
-                'Nâng cấp lên gói "Đa nhiệm" để cắt nhiều chuỗi cùng lúc. Tiết kiệm thời gian - Tiết kiệm cuộc đời!',
-                '$99.99',
-                '$0.00',
-                'multiInput',
-                () => {
-                    addNewPatternInput();
-                    updateUI();
-                }
-            );
+            // THANH TOÁN THẬT
+            if (typeof showRealPaymentModal === 'function') {
+                showRealPaymentModal(
+                    'unlockMultiInput',
+                    '➕ Đa nhiệm - Multi Input',
+                    'Cắt nhiều chuỗi cùng lúc với nhiều ô nhập. Tiết kiệm thời gian đáng kể!'
+                );
+            } else {
+                showToast('Cần mua tính năng này!', 'warning');
+            }
             return;
         }
         addNewPatternInput();
     });
 
-    // AI Answer button
+    // AI Answer button - THANH TOÁN THẬT
     aiAnswerBtn.addEventListener('click', () => {
         if (userPermissions.plan !== 'premium' && !userPermissions.aiAnswer) {
-            showPaymentModal(
-                '🤖 Thuê AI thông minh',
-                'Phí thuê AI siêu cấp: $5/câu. AI của chúng tôi được huấn luyện bởi... Google Search!',
-                '$5.00',
-                '$0.00',
-                'aiAnswer',
-                () => { triggerAIAnswer(); }
-            );
+            if (typeof showRealPaymentModal === 'function') {
+                showRealPaymentModal(
+                    'aiAnswer',
+                    '🤖 AI Trả lời',
+                    'AI sẽ phân tích và trả lời câu hỏi trong kết quả của bạn. Thông minh và nhanh chóng!'
+                );
+            } else {
+                showToast('Cần mua tính năng AI!', 'warning');
+            }
             return;
         }
         triggerAIAnswer();
     });
 
-    // History unlock button
+    // History unlock button - THANH TOÁN THẬT
     document.querySelector('.unlock-history-btn').addEventListener('click', () => {
-        showPaymentModal(
-            '📜 Mở khóa lịch sử',
-            'Xem lại tất cả các pattern bạn đã cắt. Dữ liệu quá khứ là vàng!',
-            '$2.99',
-            '$0.00',
-            'historyAccess',
-            () => {
-                updateUI();
-                showToast('Đã mở khóa lịch sử! 📜');
-            }
-        );
-    });
-
-    // Clear history - LOCKED!
-    clearHistory.addEventListener('click', () => {
-        if (userPermissions.plan !== 'premium') {
+        if (typeof showRealPaymentModal === 'function') {
+            showRealPaymentModal(
+                'unlockHistory',
+                '📜 Mở khóa Lịch sử',
+                'Xem lại tất cả các pattern bạn đã cắt. Dữ liệu quá khứ rất giá trị!'
+            );
+        } else {
             showPaymentModal(
-                '🗑️ Xóa lịch sử cao cấp',
-                'Bạn muốn xóa CHÍNH lịch sử của mình? Điều này quá nguy hiểm! Cần mua gói "Người có quyền lực" để thực hiện.',
-                '$199.99',
-                '$0.00',
-                'clearHistoryEnabled',
+                '📜 Mở khóa lịch sử',
+                'Xem lại tất cả các pattern bạn đã cắt.',
+                '29,000đ',
+                '29,000đ',
+                'historyAccess',
                 () => {
-                    history = [];
-                    localStorage.removeItem('cutHistory');
-                    renderHistory();
-                    showToast('Đã xóa lịch sử! 🗑️');
+                    updateUI();
+                    showToast('Đã mở khóa lịch sử! 📜');
                 }
             );
+        }
+    });
+
+    // Clear history - REAL PAYMENT!
+    clearHistory.addEventListener('click', () => {
+        if (userPermissions.plan !== 'premium') {
+            // Sử dụng thanh toán thật
+            if (typeof showRealPaymentModal === 'function') {
+                showRealPaymentModal(
+                    'clearHistory',
+                    '🗑️ Xóa lịch sử cao cấp',
+                    'Bạn muốn xóa CHÍNH lịch sử của mình? Tính năng này yêu cầu thanh toán để đảm bảo bạn thực sự muốn xóa.'
+                );
+            } else {
+                showToast('Cần nâng cấp Premium để xóa lịch sử!', 'warning');
+            }
             return;
         }
         history = [];
