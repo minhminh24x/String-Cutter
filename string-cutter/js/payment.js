@@ -1,24 +1,42 @@
 // ==================== STRIPE PAYMENT INTEGRATION ====================
-// Cấu hình Stripe - THAY ĐỔI CÁC GIÁ TRỊ NÀY!
+// CẤU HÌNH STRIPE - ĐÃ CẬP NHẬT VỚI LINK THẬT
 
 const STRIPE_CONFIG = {
-    // BƯỚC 1: Lấy Publishable Key từ Stripe Dashboard
-    // https://dashboard.stripe.com/apikeys
-    publishableKey: 'pk_test_YOUR_PUBLISHABLE_KEY_HERE', // Thay bằng key thật
+    // Stripe Publishable Key (Test mode)
+    publishableKey: 'pk_test_51234567890', // Sẽ cập nhật khi có key thật
 
-    // BƯỚC 2: Tạo Payment Links từ Stripe Dashboard
-    // https://dashboard.stripe.com/payment-links
+    // Payment Links từ Stripe Dashboard
     paymentLinks: {
-        // Tạo 2 Payment Links trong Stripe Dashboard với giá:
-        // - Basic: 49,000 VND
-        // - Premium: 299,000 VND
-        basic: 'https://buy.stripe.com/YOUR_BASIC_LINK', // ~49k VND
-        premium: 'https://buy.stripe.com/YOUR_PREMIUM_LINK' // ~299k VND
+        // Gói chính
+        basic: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00',      // 49,000đ
+        premium: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00',    // 299,000đ - Cần tạo link riêng
+
+        // Các gói nhỏ lẻ
+        unlockCopy: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00', // 19,000đ
+        unlockMultiInput: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00', // 29,000đ
+        unlockHistory: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00', // 39,000đ
+        unlockSpecialChars: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00', // 25,000đ
+        unlockClicks: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00', // 15,000đ
+        unlockAI: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00', // 49,000đ
+        clearHistory: 'https://buy.stripe.com/test_6oU8wR1Nz51Pbyu293dQQ00' // 9,000đ
     },
 
-    // BƯỚC 3: Đặt URLs redirect sau khi thanh toán
-    successUrl: window.location.origin + '/success.html',
-    cancelUrl: window.location.origin + '/index.html'
+    // URLs redirect (Vercel)
+    successUrl: 'https://your-app.vercel.app/success.html',
+    cancelUrl: 'https://your-app.vercel.app/index.html'
+};
+
+// Bảng giá VND
+const PRICES_VND = {
+    basic: { amount: 49000, display: '49,000đ', name: 'Gói Basic' },
+    premium: { amount: 299000, display: '299,000đ', name: 'Gói Premium' },
+    unlockCopy: { amount: 19000, display: '19,000đ', name: 'Mở khóa Copy' },
+    unlockMultiInput: { amount: 29000, display: '29,000đ', name: 'Mở khóa Multi-Input' },
+    unlockHistory: { amount: 39000, display: '39,000đ', name: 'Mở khóa Lịch sử' },
+    unlockSpecialChars: { amount: 25000, display: '25,000đ', name: 'Mở khóa Ký tự đặc biệt' },
+    unlockClicks: { amount: 15000, display: '15,000đ', name: 'Mở khóa Click vô hạn' },
+    unlockAI: { amount: 49000, display: '49,000đ', name: 'Mở khóa AI' },
+    clearHistory: { amount: 9000, display: '9,000đ', name: 'Xóa lịch sử' }
 };
 
 // ==================== PAYMENT FUNCTIONS ====================
@@ -32,25 +50,21 @@ async function initStripe() {
         console.log('✅ Stripe initialized');
         return true;
     }
-    console.log('⚠️ Stripe not configured - using demo mode');
-    return false;
+    console.log('⚠️ Stripe ready for Payment Links');
+    return true;
 }
 
 // Xử lý thanh toán thật
-async function processRealPayment(planType) {
-    // Nếu Stripe chưa config, fallback về demo mode
-    if (!STRIPE_CONFIG.publishableKey.startsWith('pk_')) {
+async function processRealPayment(productId) {
+    const paymentLink = STRIPE_CONFIG.paymentLinks[productId];
+
+    if (!paymentLink || paymentLink.includes('YOUR_')) {
         console.log('Demo mode: Simulating payment...');
-        return simulatePayment(planType);
+        return simulatePayment(productId);
     }
 
-    // Redirect đến Stripe Payment Link
-    const paymentLink = planType === 'premium'
-        ? STRIPE_CONFIG.paymentLinks.premium
-        : STRIPE_CONFIG.paymentLinks.basic;
-
-    // Lưu plan vào localStorage để xử lý sau khi redirect về
-    localStorage.setItem('pendingPlan', planType);
+    // Lưu product vào localStorage để xử lý sau khi redirect về
+    localStorage.setItem('pendingProduct', productId);
     localStorage.setItem('paymentStarted', Date.now().toString());
 
     // Redirect sang Stripe
@@ -61,22 +75,16 @@ async function processRealPayment(planType) {
 function checkPaymentSuccess() {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session_id');
-    const pendingPlan = localStorage.getItem('pendingPlan');
+    const pendingProduct = localStorage.getItem('pendingProduct');
 
-    // Nếu có session_id từ Stripe redirect
-    if (sessionId || (window.location.pathname.includes('success') && pendingPlan)) {
-        // Unlock plan
-        const plan = pendingPlan || 'basic';
-        unlockPlan(plan);
+    if (sessionId || (window.location.pathname.includes('success') && pendingProduct)) {
+        const product = pendingProduct || 'basic';
+        unlockProduct(product);
 
-        // Clear pending state
-        localStorage.removeItem('pendingPlan');
+        localStorage.removeItem('pendingProduct');
         localStorage.removeItem('paymentStarted');
 
-        // Show success
-        showPaymentSuccess(plan);
-
-        // Remove query params
+        showPaymentSuccess(product);
         window.history.replaceState({}, '', window.location.pathname);
 
         return true;
@@ -85,45 +93,67 @@ function checkPaymentSuccess() {
     return false;
 }
 
-// Unlock plan sau khi thanh toán
-function unlockPlan(planType) {
-    if (planType === 'premium') {
-        userPermissions.plan = 'premium';
-        userPermissions.characterLimit = true;
-        userPermissions.specialCharacters = true;
-        userPermissions.copyEnabled = true;
-        userPermissions.multiInput = true;
-        userPermissions.adFree = true;
-        userPermissions.aiAnswer = true;
-        userPermissions.historyAccess = true;
+// Unlock sản phẩm sau khi thanh toán
+function unlockProduct(productId) {
+    switch (productId) {
+        case 'premium':
+            userPermissions.plan = 'premium';
+            userPermissions.characterLimit = true;
+            userPermissions.specialCharacters = true;
+            userPermissions.copyEnabled = true;
+            userPermissions.multiInput = true;
+            userPermissions.adFree = true;
+            userPermissions.aiAnswer = true;
+            userPermissions.historyAccess = true;
+            userPermissions.unlimitedClicks = true;
+            hideAllAds();
+            break;
 
-        // Premium KHÔNG hết hạn (đã trả tiền thật!)
-        // Không gọi startSubscriptionDecay
-    } else {
-        userPermissions.plan = 'basic';
-        userPermissions.characterLimit = true;
-        userPermissions.specialCharacters = true;
-        userPermissions.copyEnabled = true;
-        userPermissions.multiInput = true;
+        case 'basic':
+            userPermissions.plan = 'basic';
+            userPermissions.characterLimit = true;
+            userPermissions.specialCharacters = true;
+            userPermissions.copyEnabled = true;
+            userPermissions.multiInput = true;
+            break;
+
+        case 'unlockCopy':
+            userPermissions.copyEnabled = true;
+            break;
+
+        case 'unlockMultiInput':
+            userPermissions.multiInput = true;
+            break;
+
+        case 'unlockHistory':
+            userPermissions.historyAccess = true;
+            break;
+
+        case 'unlockSpecialChars':
+            userPermissions.specialCharacters = true;
+            break;
+
+        case 'unlockClicks':
+            userPermissions.unlimitedClicks = true;
+            clickCount = 0;
+            MAX_FREE_CLICKS = 999999;
+            break;
+
+        case 'unlockAI':
+            userPermissions.aiAnswer = true;
+            break;
+
+        case 'clearHistory':
+            // Cho phép xóa một lần
+            userPermissions.clearHistoryEnabled = true;
+            break;
     }
 
-    // Lưu vào localStorage để giữ sau khi refresh
     saveUserPermissions();
-
-    // Update UI
     if (typeof updateUI === 'function') updateUI();
-
-    // Ẩn quảng cáo nếu Premium
-    if (planType === 'premium') {
-        const adBanner = document.getElementById('adBanner');
-        if (adBanner) adBanner.classList.add('hidden');
-
-        // Ẩn PropellerAds nếu có
-        hideAllAds();
-    }
 }
 
-// Lưu permissions vào localStorage
+// Lưu permissions vào localStorage (VĨNH VIỄN vì đã trả tiền!)
 function saveUserPermissions() {
     localStorage.setItem('userPermissions', JSON.stringify(userPermissions));
 }
@@ -140,9 +170,9 @@ function loadUserPermissions() {
 }
 
 // Show success message
-function showPaymentSuccess(planType) {
-    const planName = planType === 'premium' ? 'Premium 👑' : 'Basic ⭐';
-    const message = `🎉 Thanh toán thành công! Bạn đã được nâng cấp lên ${planName}!`;
+function showPaymentSuccess(productId) {
+    const product = PRICES_VND[productId];
+    const message = `🎉 Thanh toán thành công! ${product?.name || 'Sản phẩm'} đã được mở khóa!`;
 
     if (typeof showToast === 'function') {
         showToast(message);
@@ -150,56 +180,70 @@ function showPaymentSuccess(planType) {
         alert(message);
     }
 
-    // Show success modal
     const successModal = document.getElementById('successModal');
     if (successModal) {
         successModal.classList.remove('hidden');
     }
 }
 
-// Demo payment simulation (khi chưa config Stripe)
-function simulatePayment(planType) {
+// Demo payment simulation (Test mode)
+function simulatePayment(productId) {
     return new Promise((resolve) => {
-        // Giả lập xử lý 2 giây
         setTimeout(() => {
-            unlockPlan(planType);
-            showPaymentSuccess(planType);
+            unlockProduct(productId);
+            showPaymentSuccess(productId);
             resolve(true);
-        }, 2000);
+        }, 1500);
     });
 }
 
 // Ẩn tất cả quảng cáo (cho Premium users)
 function hideAllAds() {
-    // Ẩn banner quảng cáo fake
-    document.querySelectorAll('.ad-banner, .sidebar-ads').forEach(el => {
-        el.style.display = 'none';
-    });
-
-    // Ẩn PropellerAds/Adsterra ads nếu có
-    document.querySelectorAll('[id^="propeller"], [class*="adsterra"]').forEach(el => {
+    document.querySelectorAll('.ad-banner, .sidebar-ads, [id*="monetag"]').forEach(el => {
         el.style.display = 'none';
     });
 }
 
+// ==================== HELPER: Show Payment Modal cho từng feature ====================
+
+function showFeaturePaymentModal(productId, callback) {
+    const product = PRICES_VND[productId];
+    if (!product) return;
+
+    showPaymentModal(
+        `🔓 ${product.name}`,
+        `Thanh toán ${product.display} để mở khóa tính năng này vĩnh viễn!`,
+        product.display,
+        product.display,
+        null,
+        callback
+    );
+
+    // Override pay button
+    payBtn.onclick = async () => {
+        const payText = payBtn.querySelector('.pay-text');
+        const spinner = payBtn.querySelector('.loading-spinner');
+        if (payText) payText.textContent = 'Đang xử lý...';
+        if (spinner) spinner.classList.remove('hidden');
+        payBtn.disabled = true;
+
+        paymentModal.classList.add('hidden');
+        await processRealPayment(productId);
+
+        if (payText) payText.textContent = '💳 THANH TOÁN';
+        if (spinner) spinner.classList.add('hidden');
+        payBtn.disabled = false;
+    };
+}
+
 // ==================== KHỞI TẠO ====================
 
-// Chạy khi load trang
 document.addEventListener('DOMContentLoaded', () => {
-    // Load saved permissions
     loadUserPermissions();
-
-    // Init Stripe
     initStripe();
-
-    // Check payment success (từ Stripe redirect)
     checkPaymentSuccess();
-
-    // Update UI theo permissions đã lưu
     if (typeof updateUI === 'function') updateUI();
-
-    // Ẩn ads nếu đã Premium
-    if (userPermissions.plan === 'premium') {
+    if (userPermissions.plan === 'premium' || userPermissions.adFree) {
         hideAllAds();
     }
 });
