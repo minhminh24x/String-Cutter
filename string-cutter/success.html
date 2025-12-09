@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán thành công! - String Cutter PRO™</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .success-container {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            border: 2px solid #10b981;
+            box-shadow: 0 0 60px rgba(16, 185, 129, 0.3);
+            max-width: 500px;
+        }
+
+        .success-icon {
+            font-size: 5rem;
+            animation: bounce 0.6s ease infinite alternate;
+        }
+
+        @keyframes bounce {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-10px);
+            }
+        }
+
+        h1 {
+            margin: 1.5rem 0;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .plan-badge {
+            display: inline-block;
+            padding: 0.75rem 2rem;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .plan-badge.basic {
+            background: linear-gradient(135deg, #3b82f6, #60a5fa);
+        }
+
+        .plan-badge.premium {
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            color: #000;
+        }
+
+        p {
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .features {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1.5rem 0;
+        }
+
+        .features li {
+            padding: 0.5rem 0;
+            color: #d1d5db;
+            list-style: none;
+        }
+
+        .features li::before {
+            content: '✅ ';
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .confetti {
+            font-size: 2rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="success-container">
+        <div class="success-icon">🎉</div>
+        <h1>THANH TOÁN THÀNH CÔNG!</h1>
+        <div id="planBadge" class="plan-badge">Loading...</div>
+        <p id="message">Đang xử lý...</p>
+        <ul class="features" id="features"></ul>
+        <a href="index.html" class="btn">🚀 Bắt đầu sử dụng</a>
+        <div class="confetti">🎊 🎉 🎊 🎉 🎊</div>
+    </div>
+
+    <script>
+        // Lấy plan từ localStorage
+        const pendingPlan = localStorage.getItem('pendingPlan') || 'basic';
+        const planBadge = document.getElementById('planBadge');
+        const message = document.getElementById('message');
+        const features = document.getElementById('features');
+
+        if (pendingPlan === 'premium') {
+            planBadge.textContent = '👑 PREMIUM';
+            planBadge.classList.add('premium');
+            message.textContent = 'Chúc mừng bạn đã trở thành thành viên VIP! Tất cả tính năng đã được mở khóa vĩnh viễn.';
+            features.innerHTML = `
+                <li>Không giới hạn ký tự</li>
+                <li>Không quảng cáo</li>
+                <li>Copy kết quả</li>
+                <li>Multi-input patterns</li>
+                <li>Ký tự đặc biệt</li>
+                <li>AI trả lời</li>
+                <li>Lịch sử đầy đủ</li>
+            `;
+        } else {
+            planBadge.textContent = '⭐ BASIC';
+            planBadge.classList.add('basic');
+            message.textContent = 'Cảm ơn bạn đã nâng cấp lên Basic! Các tính năng đã được mở khóa.';
+            features.innerHTML = `
+                <li>500 ký tự mỗi ngày</li>
+                <li>Copy kết quả</li>
+                <li>Multi-input patterns</li>
+                <li>Ký tự đặc biệt</li>
+            `;
+        }
+
+        // Unlock plan
+        const userPermissions = JSON.parse(localStorage.getItem('userPermissions') || '{}');
+
+        if (pendingPlan === 'premium') {
+            userPermissions.plan = 'premium';
+            userPermissions.characterLimit = true;
+            userPermissions.specialCharacters = true;
+            userPermissions.copyEnabled = true;
+            userPermissions.multiInput = true;
+            userPermissions.adFree = true;
+            userPermissions.aiAnswer = true;
+            userPermissions.historyAccess = true;
+        } else {
+            userPermissions.plan = 'basic';
+            userPermissions.characterLimit = true;
+            userPermissions.specialCharacters = true;
+            userPermissions.copyEnabled = true;
+            userPermissions.multiInput = true;
+        }
+
+        localStorage.setItem('userPermissions', JSON.stringify(userPermissions));
+        localStorage.removeItem('pendingPlan');
+        localStorage.removeItem('paymentStarted');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Cutter PRO™</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Modules -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/popup.css">
+</head>
+
+<body class="popup-body">
+    <!-- Fake Ad Banner Top -->
+    <div id="adBanner" class="ad-banner popup-ad">
+        <div class="ad-content">
+            <span class="ad-label">QUẢNG CÁO</span>
+            <p class="ad-text">🤑 KIẾM $10,000/NGÀY! 🤑</p>
+        </div>
+        <button id="closeAd" class="close-ad-btn" title="Đóng quảng cáo">×</button>
+    </div>
+
+    <div class="container popup-container">
+        <header class="popup-header">
+            <div class="logo-wrapper">
+                <h1>✂️ String Cutter <span class="pro-badge">PRO™</span></h1>
+            </div>
+
+            <!-- User Status Bar -->
+            <div class="user-status popup-status">
+                <span id="currentPlan" class="plan-badge free">🐀 DÂN ĐEN</span>
+                <button id="upgradeBtn" class="upgrade-btn">⬆️</button>
+            </div>
+
+            <!-- Daily Quota -->
+            <div class="quota-bar popup-quota">
+                <div class="quota-progress">
+                    <div id="quotaFill" class="quota-fill" style="width: 100%"></div>
+                </div>
+                <span id="quotaText" class="quota-text">50/50</span>
+            </div>
+        </header>
+
+        <main class="popup-main">
+            <!-- Input Section -->
+            <div class="card input-section popup-card">
+                <div class="card-header">
+                    <span class="icon">📝</span>
+                    <h2>Văn bản</h2>
+                    <span id="charCounter" class="char-counter">0/50</span>
+                </div>
+                <textarea id="inputText" placeholder="Nhập văn bản..." maxlength="50"></textarea>
+            </div>
+
+            <!-- Cut Pattern Section -->
+            <div class="card pattern-section popup-card">
+                <div class="card-header">
+                    <span class="icon">🎯</span>
+                    <h2>Cắt</h2>
+                    <button id="addPatternBtn" class="add-pattern-btn locked" title="Thêm ô cắt">
+                        <span class="lock-icon">🔒</span> +
+                    </button>
+                </div>
+                <div id="patternInputs" class="pattern-inputs">
+                    <textarea id="cutPattern" placeholder="Phần cần cắt..."></textarea>
+                </div>
+                <div class="pattern-controls popup-controls">
+                    <div class="options">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="caseInsensitive">
+                            <span class="checkmark"></span>
+                            Case
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="cutAll" checked>
+                            <span class="checkmark"></span>
+                            All
+                        </label>
+                    </div>
+                </div>
+                <button id="cutBtn" class="btn-primary popup-cut-btn">
+                    ✂️ Cắt
+                </button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="card output-section popup-card">
+                <div class="card-header">
+                    <span class="icon">✅</span>
+                    <h2>Kết quả</h2>
+                    <button id="copyBtn" class="btn-copy locked" title="Sao chép">
+                        <span class="lock-icon">🔒</span>
+                        📋
+                        <span class="vip-label">VIP</span>
+                    </button>
+                </div>
+                <div id="outputText" class="output-display popup-output">Kết quả...</div>
+                <div class="stats popup-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Cắt:</span>
+                        <span id="cutCount" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Xóa:</span>
+                        <span id="charRemoved" class="stat-value">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Section (hidden by default) -->
+            <div id="aiSection" class="card ai-section hidden popup-card">
+                <p class="ai-description">Kết quả có câu hỏi!</p>
+                <button id="aiAnswerBtn" class="btn-ai popup-ai-btn">
+                    ✨ AI trả lời <span class="ai-price">$5</span>
+                </button>
+            </div>
+        </main>
+
+        <footer class="popup-footer">
+            <span class="revenue">💰 $<span id="todayRevenue">0.00</span></span>
+        </footer>
+    </div>
+
+    <!-- All Modals (same as index.html but simplified) -->
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content popup-modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">🔒 Tính năng cao cấp</h3>
+                <button id="closeModal" class="close-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalDescription" class="modal-desc">Bạn cần nâng cấp!</p>
+                <div class="price-display">
+                    <span class="original-price" id="originalPrice">$99.99</span>
+                    <span class="current-price" id="currentPrice">$0.00</span>
+                    <span class="discount-badge">-100%!</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="payBtn" class="pay-btn">
+                    <span class="pay-text">💳 THANH TOÁN</span>
+                    <span class="loading-spinner hidden">⏳</span>
+                </button>
+                <button id="cancelBtn" class="cancel-btn">Tôi thích khổ 😢</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content success-modal popup-modal-content">
+            <div class="success-icon">🎉</div>
+            <h3>THÀNH CÔNG!</h3>
+            <p class="success-text">Cảm ơn đã đóng góp!</p>
+            <button id="successOkBtn" class="success-ok-btn">OK!</button>
+        </div>
+    </div>
+
+    <!-- Plans Modal -->
+    <div id="plansModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content plans-modal popup-plans-modal">
+            <div class="modal-header">
+                <h3>🚀 Nâng cấp</h3>
+                <button class="close-modal close-plans">×</button>
+            </div>
+            <div class="plans-container popup-plans">
+                <div class="plan-card popup-plan">
+                    <div class="plan-icon">🐀</div>
+                    <h4>Dân Đen</h4>
+                    <p class="plan-price">FREE</p>
+                    <button class="plan-btn disabled">Hiện tại</button>
+                </div>
+                <div class="plan-card popular popup-plan">
+                    <div class="popular-badge">HOT</div>
+                    <div class="plan-icon">👨‍💼</div>
+                    <h4>Basic</h4>
+                    <p class="plan-price">$0</p>
+                    <button class="plan-btn basic-plan" data-plan="basic">Chọn</button>
+                </div>
+                <div class="plan-card premium popup-plan">
+                    <div class="premium-badge">👑</div>
+                    <div class="plan-icon">🤴</div>
+                    <h4>Premium</h4>
+                    <p class="plan-price">$0</p>
+                    <button class="plan-btn premium-plan" data-plan="premium">VIP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gacha Modal -->
+    <div id="gachaModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content gacha-modal popup-modal-content">
+            <div class="modal-header">
+                <h3>🎰 QUAY!</h3>
+            </div>
+            <div class="modal-body">
+                <p class="gacha-desc">Tỉ lệ Premium: 1% 😈</p>
+                <div class="gacha-wheel-container popup-wheel">
+                    <div id="gachaWheel" class="gacha-wheel"></div>
+                    <div class="wheel-pointer">▼</div>
+                </div>
+                <div id="gachaResult" class="gacha-result hidden"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="gachaSpinBtn" class="pay-btn">🎰 QUAY!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Modal -->
+    <div id="cookieModal" class="modal hidden cookie-modal">
+        <div class="modal-overlay cookie-overlay"></div>
+        <div class="modal-content cookie-content popup-modal-content">
+            <div class="modal-header">
+                <h3>🍪 Cookie!</h3>
+                <button id="closeCookieModal" class="close-modal close-cookie">×</button>
+            </div>
+            <div class="modal-body">
+                <p class="cookie-desc">Chấp nhận để sử dụng!</p>
+            </div>
+            <div class="modal-footer cookie-footer">
+                <button id="cookieAcceptAll" class="pay-btn cookie-accept">✅ OK!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Captcha Modal -->
+    <div id="captchaModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content captcha-modal popup-modal-content">
+            <div class="modal-header">
+                <h3>🤖 Captcha!</h3>
+            </div>
+            <div class="modal-body">
+                <p id="captchaQuestion" class="question-text">Loading...</p>
+                <input type="text" id="captchaInput" class="captcha-input" placeholder="Trả lời...">
+                <p id="captchaError" class="captcha-error hidden">❌ Sai!</p>
+            </div>
+            <div class="modal-footer">
+                <button id="captchaSubmit" class="pay-btn">✅ OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Modal -->
+    <div id="processingModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content processing-modal popup-modal-content">
+            <div class="modal-body">
+                <div class="processing-icon">⏳</div>
+                <h3>Đang xử lý...</h3>
+                <div class="queue-info">
+                    <span>Hàng đợi:</span>
+                    <span id="queueNumber" class="queue-number">14,023</span>
+                </div>
+                <div class="processing-bar-container">
+                    <div id="processingBar" class="processing-bar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Expired Modal -->
+    <div id="subscriptionExpiredModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content expired-modal popup-modal-content">
+            <div class="modal-body">
+                <div class="expired-icon">💀</div>
+                <h3>HẾT HẠN!</h3>
+                <p class="expired-status">🐀 DÂN ĐEN</p>
+            </div>
+            <div class="modal-footer">
+                <button id="renewSubscription" class="pay-btn">💳 GIA HẠN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div id="ratingModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content rating-modal popup-modal-content">
+            <div class="modal-header">
+                <h3>⭐ Đánh giá!</h3>
+            </div>
+            <div class="modal-body">
+                <div class="star-rating">
+                    <span class="star" data-rating="1">☆</span>
+                    <span class="star" data-rating="2">☆</span>
+                    <span class="star" data-rating="3">☆</span>
+                    <span class="star" data-rating="4">☆</span>
+                    <span class="star" data-rating="5">☆</span>
+                </div>
+                <div id="ratingFeedback" class="rating-feedback"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="submitRating" class="pay-btn">📤 GỬI</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ToS Modal -->
+    <div id="tosModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content tos-modal popup-modal-content">
+            <div class="modal-header">
+                <h3>📜 Điều khoản</h3>
+            </div>
+            <div class="modal-body">
+                <div id="tosContent" class="tos-content popup-tos"></div>
+                <div class="tos-progress">
+                    <span>Đọc:</span>
+                    <div class="tos-progress-bar">
+                        <div id="tosProgressFill" class="tos-progress-fill"></div>
+                    </div>
+                    <span id="tosProgressText">0%</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="tosAgreeBtn" class="pay-btn" disabled>🔒 Cuộn xuống</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast popup-toast">OK!</div>
+
+    <!-- Click Counter -->
+    <div id="clickCounter" class="click-counter popup-click">🖱️ 20/20</div>
+
+    <!-- Subscription Timer -->
+    <div id="subscriptionTimer" class="subscription-timer hidden popup-timer">⏱️ 1:00</div>
+
+    <!-- Support Chat (simplified for popup) -->
+    <div id="supportChat" class="support-chat popup-support">
+        <button id="supportChatBtn" class="support-chat-btn popup-chat-btn">💬</button>
+        <div id="chatWindow" class="chat-window hidden popup-chat-window">
+            <div class="chat-header">
+                <span>🎧 Hỗ trợ</span>
+                <button id="closeChatBtn" class="close-chat">×</button>
+            </div>
+            <div class="chat-messages">
+                <div class="chat-message bot">
+                    <div class="message-content">
+                        Tổng đài bận <strong>ĐẾM TIỀN</strong>. Hàng đợi: <span class="queue-highlight">#9,999</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sound Effects -->
+    <audio id="kachingSound" preload="auto">
+        <source src="https://www.soundjay.com/button/sounds/button-09.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="errorSound" preload="auto">
+        <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- JavaScript Modules -->
+    <script src="js/state.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/features.js"></script>
+    <script src="js/modals.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

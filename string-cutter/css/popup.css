@@ -1,0 +1,262 @@
+/* ==================== POPUP SPECIFIC STYLES ==================== */
+
+/* Popup body & container */
+.popup-body {
+    width: 420px;
+    min-height: 500px;
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.popup-container {
+    padding: 0.75rem;
+    max-width: 100%;
+}
+
+/* Header */
+.popup-header {
+    margin-bottom: 0.75rem;
+}
+
+.popup-header h1 {
+    font-size: 1.5rem;
+}
+
+.popup-status {
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.popup-quota {
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+}
+
+/* Cards */
+.popup-card {
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-radius: 12px;
+}
+
+.popup-card .card-header {
+    margin-bottom: 0.5rem;
+}
+
+.popup-card .card-header h2 {
+    font-size: 1rem;
+}
+
+.popup-card textarea {
+    min-height: 60px;
+    font-size: 0.9rem;
+    padding: 0.75rem;
+}
+
+/* Controls */
+.popup-controls {
+    margin: 0.5rem 0;
+}
+
+.popup-controls .options {
+    gap: 0.75rem;
+    font-size: 0.8rem;
+}
+
+.popup-cut-btn {
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+
+/* Output */
+.popup-output {
+    min-height: 50px;
+    font-size: 0.9rem;
+    padding: 0.75rem;
+}
+
+.popup-stats {
+    gap: 1rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* AI Section */
+.popup-ai-btn {
+    padding: 0.75rem;
+    font-size: 0.9rem;
+}
+
+/* Footer */
+.popup-footer {
+    padding: 0.5rem 0;
+    font-size: 0.8rem;
+}
+
+/* Ad banner */
+.popup-ad {
+    padding: 0.5rem;
+}
+
+.popup-ad .ad-text {
+    font-size: 0.9rem;
+}
+
+/* Modals */
+.popup-modal-content {
+    padding: 1rem;
+    max-width: 350px;
+}
+
+.popup-modal-content h3 {
+    font-size: 1.1rem;
+}
+
+.popup-modal-content .modal-desc {
+    font-size: 0.85rem;
+}
+
+.popup-modal-content .price-display {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.popup-modal-content .current-price {
+    font-size: 1.8rem;
+}
+
+/* Plans modal */
+.popup-plans-modal {
+    max-width: 380px;
+    padding: 1rem;
+}
+
+.popup-plans {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.popup-plan {
+    padding: 0.75rem;
+}
+
+.popup-plan .plan-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.popup-plan h4 {
+    font-size: 0.8rem;
+}
+
+.popup-plan .plan-price {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.popup-plan .plan-btn {
+    padding: 0.4rem;
+    font-size: 0.75rem;
+}
+
+/* Gacha wheel */
+.popup-wheel {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 1rem;
+}
+
+.popup-wheel .gacha-wheel {
+    width: 100%;
+    height: 100%;
+}
+
+/* ToS */
+.popup-tos {
+    height: 150px;
+}
+
+/* Toast */
+.popup-toast {
+    font-size: 0.85rem;
+    padding: 0.75rem 1.5rem;
+}
+
+/* Click counter */
+.popup-click {
+    top: 5px;
+    right: 5px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+}
+
+/* Timer */
+.popup-timer {
+    top: 30px;
+    right: 5px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+}
+
+/* Support chat */
+.popup-support {
+    bottom: 10px;
+    right: 10px;
+}
+
+.popup-chat-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+}
+
+.popup-chat-btn .chat-badge {
+    display: none;
+}
+
+.popup-chat-window {
+    width: 250px;
+    bottom: 50px;
+}
+
+.popup-chat-window .chat-header {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.popup-chat-window .message-content {
+    font-size: 0.8rem;
+    padding: 0.75rem;
+}
+
+/* Scrollbar */
+.popup-body::-webkit-scrollbar {
+    width: 5px;
+}
+
+.popup-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.popup-body::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 5px;
+}
+
+/* Hide sidebar ads in popup */
+.sidebar-ads {
+    display: none !important;
+}
+
+/* Responsive adjustments */
+@media (max-height: 500px) {
+    .popup-body {
+        min-height: auto;
+    }
+
+    .popup-card textarea {
+        min-height: 40px;
+    }
+}

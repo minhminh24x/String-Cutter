@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>String Cutter PRO™ - Công cụ cắt chuỗi SIÊU CAO CẤP</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS Modules -->
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/modals.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <!-- Fake Ad Banner Top -->
+    <div id="adBanner" class="ad-banner">
+        <div class="ad-content">
+            <span class="ad-label">QUẢNG CÁO</span>
+            <p class="ad-text">🤑 KIẾM $10,000/NGÀY CHỈ VỚI ĐIỆN THOẠI! BẤM NGAY! 🤑</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                alt="QR Code" class="ad-qr">
+        </div>
+        <button id="closeAd" class="close-ad-btn" title="Đóng quảng cáo">×</button>
+    </div>
+
+    <!-- Left Sidebar Ads -->
+    <div class="sidebar-ads left-ads">
+        <div class="sidebar-ad">
+            <span class="ad-label">QUẢNG CÁO</span>
+            <div class="ad-box">
+                <p>🏠 MUA NHÀ 0 ĐỒNG!</p>
+                <p class="ad-small">Chỉ cần 999 triệu/tháng</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    alt="QR" class="sidebar-qr">
+            </div>
+        </div>
+        <div class="sidebar-ad">
+            <span class="ad-label">TÀI TRỢ</span>
+            <div class="ad-box casino">
+                <p>🎰 CASINO ONLINE</p>
+                <p class="ad-small">Thắng 1000% ngay lần đầu!</p>
+                <button class="ad-btn">CHƠI NGAY!</button>
+            </div>
+        </div>
+        <div class="sidebar-ad">
+            <span class="ad-label">HOT</span>
+            <div class="ad-box">
+                <p>💊 GIẢM 50KG/TUẦN</p>
+                <p class="ad-small">Không cần ăn kiêng!</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    alt="QR" class="sidebar-qr">
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Sidebar Ads -->
+    <div class="sidebar-ads right-ads">
+        <div class="sidebar-ad">
+            <span class="ad-label">QUẢNG CÁO</span>
+            <div class="ad-box">
+                <p>📈 GIÀU SAU 1 ĐÊM</p>
+                <p class="ad-small">Bí mật tỷ phú không muốn bạn biết!</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    alt="QR" class="sidebar-qr">
+            </div>
+        </div>
+        <div class="sidebar-ad">
+            <span class="ad-label">VIP</span>
+            <div class="ad-box dating">
+                <p>❤️ GẶP GỠ NGAY!</p>
+                <p class="ad-small">999 người đang chờ bạn gần đây...</p>
+                <button class="ad-btn pulse-btn">XEM NGAY!</button>
+            </div>
+        </div>
+        <div class="sidebar-ad">
+            <span class="ad-label">CRYPTO</span>
+            <div class="ad-box crypto">
+                <p>🚀 BITCOIN x1000</p>
+                <p class="ad-small">Đầu tư 1 triệu thành 1 tỷ!</p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    alt="QR" class="sidebar-qr">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo-wrapper">
+                <h1>✂️ String Cutter <span class="pro-badge">PRO™</span></h1>
+                <div class="premium-stars">⭐⭐⭐⭐⭐</div>
+            </div>
+            <p class="subtitle">Công cụ cắt chuỗi SIÊU CAO CẤP hỗ trợ ký tự đặc biệt</p>
+
+            <!-- User Status Bar -->
+            <div class="user-status">
+                <span class="status-label">Gói hiện tại:</span>
+                <span id="currentPlan" class="plan-badge free">🐀 DÂN ĐEN</span>
+                <button id="upgradeBtn" class="upgrade-btn">⬆️ NÂNG CẤP</button>
+            </div>
+
+            <!-- Daily Quota -->
+            <div class="quota-bar">
+                <span class="quota-label">Hạn ngạch hôm nay:</span>
+                <div class="quota-progress">
+                    <div id="quotaFill" class="quota-fill" style="width: 100%"></div>
+                </div>
+                <span id="quotaText" class="quota-text">50/50 ký tự</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <div class="card input-section">
+                <div class="card-header">
+                    <span class="icon">📝</span>
+                    <h2>Văn bản gốc</h2>
+                    <span id="charCounter" class="char-counter">0/50</span>
+                </div>
+                <textarea id="inputText"
+                    placeholder="Nhập văn bản của bạn vào đây... (Tối đa 50 ký tự cho gói miễn phí)"
+                    maxlength="50"></textarea>
+                <p class="limit-warning">⚠️ Gói miễn phí chỉ cho phép 50 ký tự. <a href="#" class="upgrade-link">Nâng
+                        cấp ngay!</a></p>
+            </div>
+
+            <!-- Cut Pattern Section -->
+            <div class="card pattern-section">
+                <div class="card-header">
+                    <span class="icon">🎯</span>
+                    <h2>Phần cần cắt</h2>
+                    <button id="addPatternBtn" class="add-pattern-btn locked" title="Thêm ô cắt">
+                        <span class="lock-icon">🔒</span> +
+                    </button>
+                </div>
+                <div id="patternInputs" class="pattern-inputs">
+                    <textarea id="cutPattern" placeholder="Nhập phần chuỗi cần cắt bỏ..."></textarea>
+                </div>
+                <div class="pattern-controls">
+                    <div class="options">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="caseInsensitive">
+                            <span class="checkmark"></span>
+                            Không phân biệt hoa thường
+                        </label>
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="cutAll" checked>
+                            <span class="checkmark"></span>
+                            Cắt tất cả (nếu có nhiều)
+                        </label>
+                    </div>
+                </div>
+                <button id="cutBtn" class="btn-primary">
+                    <span class="btn-icon">✂️</span>
+                    Cắt chuỗi
+                </button>
+            </div>
+
+            <!-- AI Answer Section (shows when OUTPUT has question) -->
+            <div id="aiSection" class="card ai-section hidden">
+                <div class="card-header">
+                    <span class="icon">🤖</span>
+                    <h2>AI Phát hiện câu hỏi trong kết quả!</h2>
+                </div>
+                <p class="ai-description">Kết quả của bạn chứa câu hỏi. Để AI siêu thông minh trả lời giúp bạn!</p>
+                <button id="aiAnswerBtn" class="btn-ai">
+                    <span class="sparkle">✨</span>
+                    Nhờ AI trả lời hộ
+                    <span class="ai-price">$5/câu</span>
+                </button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="card output-section">
+                <div class="card-header">
+                    <span class="icon">✅</span>
+                    <h2>Kết quả</h2>
+                    <button id="copyBtn" class="btn-copy locked" title="Sao chép">
+                        <span class="lock-icon">🔒</span>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <span class="vip-label">VIP</span>
+                    </button>
+                </div>
+                <div id="outputText" class="output-display">Kết quả sẽ hiển thị ở đây...</div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Số lần cắt:</span>
+                        <span id="cutCount" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Ký tự đã xóa:</span>
+                        <span id="charRemoved" class="stat-value">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Section -->
+            <div class="card history-section">
+                <div class="card-header">
+                    <span class="icon">📋</span>
+                    <h2>Lịch sử cắt</h2>
+                    <span class="premium-feature">
+                        <span class="lock-icon">🔒</span>
+                        PREMIUM
+                    </span>
+                    <button id="clearHistory" class="btn-clear" title="Xóa lịch sử">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="3,6 5,6 21,6"></polyline>
+                            <path
+                                d="M19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2">
+                            </path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="historyList" class="history-list blurred">
+                    <p class="empty-history">Chưa có lịch sử cắt nào...</p>
+                </div>
+                <div class="history-overlay">
+                    <p>🔒 Mở khóa lịch sử với gói Premium</p>
+                    <button class="unlock-history-btn">Mở khóa - $2.99</button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Made with 💰 | String Cutter PRO™ v2.0 | <span class="revenue">Doanh thu hôm nay: $<span
+                        id="todayRevenue">0.00</span></span></p>
+        </footer>
+    </div>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">🔒 Tính năng cao cấp</h3>
+                <button id="closeModal" class="close-modal">×</button>
+            </div>
+            <div class="modal-body">
+                <p id="modalDescription" class="modal-desc">Bạn cần nâng cấp để sử dụng tính năng này.</p>
+
+                <div class="price-display">
+                    <span class="original-price" id="originalPrice">$99.99</span>
+                    <span class="current-price" id="currentPrice">$0.00</span>
+                    <span class="discount-badge">GIẢM 100%!</span>
+                </div>
+
+                <div class="payment-methods">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                        alt="QR Payment" class="qr-code">
+                    <p class="qr-label">Quét mã để thanh toán</p>
+                </div>
+
+                <div class="card-icons">
+                    <span>💳</span><span>🏦</span><span>📱</span><span>🪙</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="payBtn" class="pay-btn">
+                    <span class="pay-text">💳 THANH TOÁN NGAY</span>
+                    <span class="loading-spinner hidden">⏳</span>
+                </button>
+                <button id="cancelBtn" class="cancel-btn">Tôi thích khổ dâm 😢</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content success-modal">
+            <div class="success-icon">🎉</div>
+            <h3>GIAO DỊCH THÀNH CÔNG!</h3>
+            <p class="success-text">Cảm ơn bạn đã đóng góp cho quỹ mua trà sữa của chúng tôi!</p>
+            <div class="confetti">🎊🎉🎊🎉🎊</div>
+            <button id="successOkBtn" class="success-ok-btn">Tuyệt vời!</button>
+        </div>
+    </div>
+
+    <!-- Upgrade Plans Modal -->
+    <div id="plansModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content plans-modal">
+            <div class="modal-header">
+                <h3>🚀 Chọn gói nâng cấp</h3>
+                <button class="close-modal close-plans">×</button>
+            </div>
+            <div class="plans-container">
+                <div class="plan-card current">
+                    <div class="plan-icon">🐀</div>
+                    <h4>Dân Đen</h4>
+                    <p class="plan-price">MIỄN PHÍ</p>
+                    <ul class="plan-features">
+                        <li>❌ 50 ký tự/ngày</li>
+                        <li>❌ Không ký tự đặc biệt</li>
+                        <li>❌ Không copy</li>
+                        <li>❌ 1 ô cắt</li>
+                        <li>❌ Đầy quảng cáo</li>
+                    </ul>
+                    <button class="plan-btn disabled">Gói hiện tại</button>
+                </div>
+                <div class="plan-card popular">
+                    <div class="popular-badge">PHỔ BIẾN</div>
+                    <div class="plan-icon">👨‍💼</div>
+                    <h4>Công dân gương mẫu</h4>
+                    <p class="plan-price"><del>$49.99</del> $0</p>
+                    <ul class="plan-features">
+                        <li>✅ 500 ký tự/ngày</li>
+                        <li>✅ Ký tự đặc biệt cơ bản</li>
+                        <li>✅ Copy không giới hạn</li>
+                        <li>✅ 3 ô cắt</li>
+                        <li>❌ Vẫn có quảng cáo</li>
+                    </ul>
+                    <button class="plan-btn basic-plan" data-plan="basic">Chọn gói này</button>
+                </div>
+                <div class="plan-card premium">
+                    <div class="premium-badge">👑 VIP</div>
+                    <div class="plan-icon">🤴</div>
+                    <h4>Tư bản thượng hạng</h4>
+                    <p class="plan-price"><del>$999.99</del> $0</p>
+                    <ul class="plan-features">
+                        <li>✅ VÔ HẠN ký tự</li>
+                        <li>✅ TẤT CẢ ký tự đặc biệt</li>
+                        <li>✅ Copy VIP</li>
+                        <li>✅ VÔ HẠN ô cắt</li>
+                        <li>✅ Không quảng cáo</li>
+                        <li>✅ AI trả lời miễn phí</li>
+                        <li>✅ Lịch sử đầy đủ</li>
+                    </ul>
+                    <button class="plan-btn premium-plan" data-plan="premium">Trở thành VIP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">Đã sao chép!</div>
+
+    <!-- Click Counter Display -->
+    <div id="clickCounter" class="click-counter">🖱️ Click còn lại: 20/20</div>
+
+    <!-- Subscription Timer Display -->
+    <div id="subscriptionTimer" class="subscription-timer hidden">⏱️ Gói hết hạn: <span
+            class="timer-countdown">1:00</span></div>
+
+    <!-- Ka-ching Sound -->
+    <audio id="kachingSound" preload="auto">
+        <source src="https://www.soundjay.com/button/sounds/button-09.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- GACHA WHEEL MODAL -->
+    <div id="gachaModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content gacha-modal">
+            <div class="modal-header">
+                <h3>🎰 VÒNG QUAY MAY MẮN!</h3>
+            </div>
+            <div class="modal-body">
+                <p class="gacha-desc">Quay để nhận phần thưởng! Tỉ lệ trúng Premium: 1% 😈</p>
+                <div class="gacha-wheel-container">
+                    <div id="gachaWheel" class="gacha-wheel">
+                        <div class="wheel-segment fail">😢</div>
+                        <div class="wheel-segment discount">🎉</div>
+                        <div class="wheel-segment fail">😢</div>
+                        <div class="wheel-segment extra">🔄</div>
+                        <div class="wheel-segment fail">😢</div>
+                        <div class="wheel-segment basic">⭐</div>
+                        <div class="wheel-segment fail">😢</div>
+                        <div class="wheel-segment premium">👑</div>
+                    </div>
+                    <div class="wheel-pointer">▼</div>
+                </div>
+                <div id="gachaResult" class="gacha-result hidden">
+                    <div class="gacha-result-icon">🎉</div>
+                    <div class="gacha-result-text">Kết quả!</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="gachaSpinBtn" class="pay-btn gacha-spin-btn">🎰 QUAY NGAY!</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- COOKIE CONSENT NIGHTMARE MODAL -->
+    <div id="cookieModal" class="modal hidden cookie-modal">
+        <div class="modal-overlay cookie-overlay"></div>
+        <div class="modal-content cookie-content">
+            <div class="modal-header">
+                <h3>🍪 Chúng tôi sử dụng Cookie!</h3>
+                <button id="closeCookieModal" class="close-modal close-cookie">×</button>
+            </div>
+            <div class="modal-body">
+                <p class="cookie-desc">
+                    Chúng tôi sử dụng cookie để theo dõi mọi thứ bạn làm, bán dữ liệu cho 847 đối tác quảng cáo,
+                    và gửi email spam đến hết đời bạn. Chúng tôi cũng chia sẻ vị trí của bạn với FBI, CIA, và mẹ bạn.
+                </p>
+                <div class="cookie-options">
+                    <div class="cookie-category">
+                        <input type="checkbox" checked disabled> <span>Cookie cần thiết (không tắt được)</span>
+                    </div>
+                    <div class="cookie-category">
+                        <input type="checkbox" checked disabled> <span>Cookie theo dõi (không tắt được)</span>
+                    </div>
+                    <div class="cookie-category">
+                        <input type="checkbox" checked disabled> <span>Cookie quảng cáo (không tắt được)</span>
+                    </div>
+                    <div class="cookie-category">
+                        <input type="checkbox" checked disabled> <span>Cookie bán dữ liệu (không tắt được)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer cookie-footer">
+                <button id="cookieAcceptAll" class="pay-btn cookie-accept">✅ CHẤP NHẬN TẤT CẢ</button>
+                <button id="cookieCustomize" class="cancel-btn cookie-customize">⚙️ Tùy chỉnh (không hoạt động)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CAPTCHA MODAL -->
+    <div id="captchaModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content captcha-modal">
+            <div class="modal-header">
+                <h3>🤖 Xác nhận bạn là người!</h3>
+            </div>
+            <div class="modal-body">
+                <p class="captcha-desc">Để chứng minh bạn không phải robot, hãy trả lời câu hỏi sau:</p>
+                <div class="captcha-question">
+                    <p id="captchaQuestion" class="question-text">Đang tải câu hỏi...</p>
+                </div>
+                <input type="text" id="captchaInput" class="captcha-input" placeholder="Nhập câu trả lời...">
+                <p id="captchaError" class="captcha-error hidden">❌ Sai rồi! Thử lại đi!</p>
+            </div>
+            <div class="modal-footer">
+                <button id="captchaSubmit" class="pay-btn">✅ XÁC NHẬN</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PROCESSING QUEUE MODAL (Artificial Lag) -->
+    <div id="processingModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content processing-modal">
+            <div class="modal-body">
+                <div class="processing-icon">⏳</div>
+                <h3>Đang xử lý yêu cầu...</h3>
+                <p class="processing-desc">Máy chủ đang quá tải vì người dùng Free quá đông!</p>
+                <div class="queue-info">
+                    <span>Vị trí của bạn trong hàng đợi:</span>
+                    <span id="queueNumber" class="queue-number">14,023</span>
+                </div>
+                <div class="processing-bar-container">
+                    <div id="processingBar" class="processing-bar"></div>
+                </div>
+                <p class="processing-tip">💡 Mẹo: Mua gói Premium để được xử lý NGAY LẬP TỨC!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUBSCRIPTION EXPIRED MODAL -->
+    <div id="subscriptionExpiredModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content expired-modal">
+            <div class="modal-body">
+                <div class="expired-icon">💀</div>
+                <h3>GÓI CƯỚC ĐÃ HẾT HẠN!</h3>
+                <p class="expired-desc">Thời gian trôi qua nhanh quá phải không? Đẳng cấp của bạn đã bị hạ xuống.</p>
+                <p class="expired-status">Bạn hiện là: <strong>🐀 DÂN ĐEN</strong></p>
+                <p class="expired-cta">Nạp tiền ngay để tiếp tục cuộc sống thượng lưu!</p>
+            </div>
+            <div class="modal-footer">
+                <button id="renewSubscription" class="pay-btn">💳 GIA HẠN NGAY</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAKE SUPPORT CHAT WIDGET -->
+    <div id="supportChat" class="support-chat">
+        <button id="supportChatBtn" class="support-chat-btn">
+            <span class="chat-icon">💬</span>
+            <span class="chat-badge">1</span>
+        </button>
+        <div id="chatWindow" class="chat-window hidden">
+            <div class="chat-header">
+                <span>🎧 Hỗ trợ khách hàng</span>
+                <button id="closeChatBtn" class="close-chat">×</button>
+            </div>
+            <div class="chat-messages">
+                <div class="chat-message bot">
+                    <div class="bot-avatar">🤖</div>
+                    <div class="message-content">
+                        Xin chào! Tôi là StringBot. Hiện tất cả tổng đài viên đang bận <strong>ĐẾM TIỀN</strong>.
+                        <br><br>
+                        Bạn đang ở vị trí <span id="supportQueueNum" class="queue-highlight">#9,999</span> trong hàng
+                        chờ.
+                        <br><br>
+                        <em>Thời gian chờ ước tính: ∞</em>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" class="chat-input" placeholder="Nhập tin nhắn... (không ai đọc đâu)" disabled>
+                <button class="chat-send-btn" disabled>📤</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RATING NAG MODAL -->
+    <div id="ratingModal" class="modal hidden">
+        <div class="modal-overlay rating-overlay"></div>
+        <div class="modal-content rating-modal">
+            <div class="modal-header">
+                <h3>⭐ Đánh giá String Cutter PRO™</h3>
+            </div>
+            <div class="modal-body">
+                <p class="rating-desc">Bạn có thích công cụ này không? Hãy cho chúng tôi 5 sao nhé!</p>
+                <div class="star-rating">
+                    <span class="star" data-rating="1">☆</span>
+                    <span class="star" data-rating="2">☆</span>
+                    <span class="star" data-rating="3">☆</span>
+                    <span class="star" data-rating="4">☆</span>
+                    <span class="star" data-rating="5">☆</span>
+                </div>
+                <div id="ratingFeedback" class="rating-feedback"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="submitRating" class="pay-btn rating-submit-btn">📤 GỬI ĐÁNH GIÁ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TERMS OF SERVICE MODAL -->
+    <div id="tosModal" class="modal hidden">
+        <div class="modal-overlay tos-overlay"></div>
+        <div class="modal-content tos-modal">
+            <div class="modal-header">
+                <h3>📜 Điều khoản sử dụng</h3>
+            </div>
+            <div class="modal-body">
+                <p class="tos-desc">Vui lòng đọc và cuộn xuống cuối để đồng ý với điều khoản:</p>
+                <div id="tosContent" class="tos-content">
+                    <!-- Content will be generated by JS -->
+                </div>
+                <div class="tos-progress">
+                    <span>Tiến độ đọc:</span>
+                    <div class="tos-progress-bar">
+                        <div id="tosProgressFill" class="tos-progress-fill"></div>
+                    </div>
+                    <span id="tosProgressText">0%</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="tosAgreeBtn" class="pay-btn tos-agree-btn" disabled>🔒 Cuộn xuống để mở khóa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sound Effects -->
+    <audio id="kachingSound" preload="auto">
+        <source src="https://www.soundjay.com/button/sounds/button-09.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="errorSound" preload="auto">
+        <source src="https://www.soundjay.com/buttons/sounds/button-10.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Stripe SDK -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+    <!-- JavaScript Modules -->
+    <script src="js/state.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/features.js"></script>
+    <script src="js/modals.js"></script>
+    <script src="js/payment.js"></script>
+    <script src="js/ads.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

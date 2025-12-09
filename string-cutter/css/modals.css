@@ -1,0 +1,955 @@
+/* ==================== MODALS ==================== */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    position: relative;
+    background: var(--bg-card);
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    padding: 2rem;
+    max-width: 450px;
+    width: 90%;
+    animation: modalSlideIn 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.close-modal:hover {
+    color: var(--danger);
+}
+
+.modal-body {
+    text-align: center;
+}
+
+.modal-desc {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.price-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.original-price {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    font-size: 1.2rem;
+}
+
+.current-price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.discount-badge {
+    background: var(--danger);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    animation: pulse 0.5s ease infinite;
+}
+
+.payment-methods {
+    margin: 1.5rem 0;
+}
+
+.qr-code {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    border: 3px solid var(--primary);
+}
+
+.qr-label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.card-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    font-size: 2rem;
+    margin-top: 1rem;
+}
+
+.modal-footer {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.pay-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--gradient-gold);
+    border: none;
+    border-radius: 12px;
+    color: #000;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    animation: glowPulse 1.5s ease infinite;
+    transition: transform 0.2s;
+}
+
+.pay-btn:hover {
+    transform: scale(1.02);
+}
+
+.pay-btn .loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+.pay-btn .loading-spinner.hidden {
+    display: none;
+}
+
+.cancel-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+/* Success Modal */
+.success-modal {
+    text-align: center;
+    border-color: var(--secondary);
+}
+
+.success-icon {
+    font-size: 4rem;
+    animation: bounce 0.5s ease infinite;
+}
+
+.success-modal h3 {
+    color: var(--secondary);
+    font-size: 1.8rem;
+    margin: 1rem 0;
+}
+
+.success-text {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.confetti {
+    font-size: 2rem;
+    animation: confettiDrop 1s ease infinite;
+}
+
+.success-ok-btn {
+    margin-top: 1rem;
+    padding: 1rem 3rem;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.success-ok-btn:hover {
+    transform: scale(1.05);
+}
+
+/* Plans Modal */
+.plans-modal {
+    max-width: 900px;
+}
+
+.plans-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.plan-card {
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.plan-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+}
+
+.plan-card.current {
+    opacity: 0.6;
+}
+
+.plan-card.popular {
+    border-color: var(--primary);
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+}
+
+.plan-card.premium {
+    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(0, 0, 0, 0));
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+}
+
+.popular-badge,
+.premium-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.popular-badge {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.premium-badge {
+    background: var(--gradient-gold);
+    color: #000;
+}
+
+.plan-icon {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+}
+
+.plan-card h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.plan-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+}
+
+.plan-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.plan-features li {
+    padding: 0.4rem 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.plan-btn {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.plan-btn.disabled {
+    background: rgba(100, 100, 100, 0.3);
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+.plan-btn.basic-plan {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.plan-btn.premium-plan {
+    background: var(--gradient-gold);
+    color: #000;
+    animation: glowPulse 1.5s ease infinite;
+}
+
+.plan-btn:not(.disabled):hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .plans-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================== EVIL MODALS ==================== */
+
+/* Click Counter */
+.click-counter {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    z-index: 100;
+}
+
+.click-counter.hidden {
+    display: none;
+}
+
+.click-counter.warning {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.click-counter.danger {
+    border-color: var(--danger);
+    color: var(--danger);
+    animation: pulse 0.5s ease infinite;
+}
+
+/* Subscription Timer */
+.subscription-timer {
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    background: var(--bg-card);
+    border: 2px solid var(--gold);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--gold);
+    z-index: 100;
+}
+
+.subscription-timer.hidden {
+    display: none;
+}
+
+.subscription-timer.expiring {
+    animation: pulse 0.3s ease infinite;
+    border-color: var(--danger);
+    color: var(--danger);
+}
+
+.timer-countdown {
+    font-weight: 700;
+    font-family: monospace;
+}
+
+/* Gacha Modal */
+.gacha-modal {
+    max-width: 500px;
+    border-color: var(--gold);
+}
+
+.gacha-desc {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.gacha-wheel-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    margin: 0 auto 1.5rem;
+}
+
+.gacha-wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 6px solid var(--gold);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), inset 0 0 20px rgba(0, 0, 0, 0.3);
+    background: conic-gradient(from 0deg,
+            #ef4444 0deg 45deg,
+            /* Fail 1 */
+            #f59e0b 45deg 90deg,
+            /* Discount */
+            #ef4444 90deg 135deg,
+            /* Fail 2 */
+            #3b82f6 135deg 180deg,
+            /* Extra */
+            #ef4444 180deg 225deg,
+            /* Fail 3 */
+            #10b981 225deg 270deg,
+            /* Basic */
+            #ef4444 270deg 315deg,
+            /* Fail 4 */
+            #ffd700 315deg 360deg
+            /* Premium */
+        );
+    position: relative;
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+}
+
+.gacha-wheel::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    background: var(--bg-card);
+    border: 4px solid var(--gold);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.gacha-wheel::after {
+    content: '🎰';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.8rem;
+    z-index: 3;
+}
+
+/* Hide actual segment divs since we use conic gradient */
+.wheel-segment {
+    display: none;
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2rem;
+    color: var(--gold);
+    text-shadow: 0 0 10px var(--gold);
+    z-index: 10;
+}
+
+.gacha-result {
+    padding: 1rem;
+    background: var(--bg-input);
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+.gacha-result.hidden {
+    display: none;
+}
+
+.gacha-result-icon {
+    font-size: 3rem;
+    animation: bounce 0.5s ease infinite;
+}
+
+.gacha-result-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 0.5rem;
+}
+
+.gacha-spin-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Cookie Modal */
+.cookie-modal .modal-content {
+    border-color: #8b4513;
+    max-width: 550px;
+}
+
+.cookie-desc {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.cookie-options {
+    text-align: left;
+    margin-bottom: 1rem;
+}
+
+.cookie-category {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: var(--bg-input);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-muted);
+}
+
+.cookie-category input {
+    width: 18px;
+    height: 18px;
+}
+
+.cookie-accept {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.cookie-customize {
+    font-size: 0.8rem;
+}
+
+/* Captcha Modal */
+.captcha-modal {
+    max-width: 450px;
+}
+
+.captcha-desc {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.captcha-question {
+    background: var(--bg-input);
+    border: 2px solid var(--primary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.question-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.captcha-input {
+    width: 100%;
+    padding: 1rem;
+    background: var(--bg-input);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.captcha-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.captcha-input.shake {
+    animation: shake 0.3s ease;
+    border-color: var(--danger);
+}
+
+.captcha-error {
+    color: var(--danger);
+    font-size: 0.9rem;
+}
+
+.captcha-error.hidden {
+    display: none;
+}
+
+/* Processing Modal */
+.processing-modal {
+    max-width: 400px;
+}
+
+.processing-icon {
+    font-size: 4rem;
+    animation: spin 2s linear infinite;
+    margin-bottom: 1rem;
+}
+
+.processing-desc {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.queue-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.queue-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--danger);
+    font-family: monospace;
+}
+
+.processing-bar-container {
+    width: 100%;
+    height: 20px;
+    background: var(--bg-input);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.processing-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--gradient-primary);
+    border-radius: 10px;
+    transition: width 0.05s linear;
+}
+
+.processing-tip {
+    color: var(--gold);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* Subscription Expired Modal */
+.expired-modal {
+    max-width: 400px;
+    border-color: var(--danger);
+}
+
+.expired-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.expired-desc {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.expired-status {
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.expired-cta {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+/* ==================== SUPPORT CHAT WIDGET ==================== */
+.support-chat {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 500;
+}
+
+.support-chat-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    transition: all 0.3s;
+    position: relative;
+}
+
+.support-chat-btn:hover {
+    transform: scale(1.1);
+}
+
+.chat-icon {
+    font-size: 1.8rem;
+}
+
+.chat-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 20px;
+    height: 20px;
+    background: var(--danger);
+    color: white;
+    font-size: 0.7rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: pulse 1s ease infinite;
+}
+
+.chat-window {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 320px;
+    background: var(--bg-card);
+    border: 2px solid var(--primary);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.chat-window.hidden {
+    display: none;
+}
+
+.chat-header {
+    background: var(--gradient-primary);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-weight: 600;
+}
+
+.close-chat {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.chat-messages {
+    padding: 1rem;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.chat-message.bot {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.bot-avatar {
+    font-size: 2rem;
+}
+
+.message-content {
+    background: var(--bg-input);
+    padding: 1rem;
+    border-radius: 12px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.queue-highlight {
+    color: var(--danger);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.chat-input-area {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+}
+
+.chat-input {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.chat-send-btn {
+    padding: 0.75rem 1rem;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 8px;
+    opacity: 0.5;
+}
+
+/* ==================== RATING MODAL ==================== */
+.rating-modal {
+    max-width: 400px;
+}
+
+.rating-desc {
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.star {
+    font-size: 3rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-muted);
+}
+
+.star:hover,
+.star.active {
+    color: var(--gold);
+    transform: scale(1.2);
+}
+
+.star.selected {
+    color: var(--gold);
+}
+
+.rating-feedback {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-submit-btn {
+    transition: all 0.1s;
+}
+
+.rating-submit-btn.runaway {
+    position: relative;
+}
+
+/* ==================== TOS MODAL ==================== */
+.tos-modal {
+    max-width: 600px;
+}
+
+.tos-desc {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.tos-content {
+    height: 300px;
+    overflow-y: scroll;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1rem;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.tos-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.tos-progress-bar {
+    flex: 1;
+    height: 10px;
+    background: var(--bg-input);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.tos-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--gradient-primary);
+    transition: width 0.1s;
+}
+
+.tos-agree-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.tos-agree-btn:not(:disabled) {
+    background: var(--gradient-gold);
+    animation: glowPulse 1s ease infinite;
+}
